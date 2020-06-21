@@ -54,31 +54,36 @@ theme.addEventListener('change', () => {
 // Register for activities section
 
 const activities = document.querySelector('.activities');
-const allActivities = document.querySelectorAll('input');
+const allActivities = document.querySelectorAll('input[type=checkbox]');
 
 let activitiesTotal = document.createElement('input');
-// activitiesTotal.disabled = true;
+activitiesTotal.disabled = true;
 activities.appendChild(activitiesTotal);
 
 let activitiesTotalCost = 0;
-activitiesTotal.value = `Total: $ ${activitiesTotalCost}`;
+activitiesTotal.value = `Total: $${activitiesTotalCost}`;
 
 activities.addEventListener('change', (e) => {
     const activity = e.target;
-    const activityDate = activity.getAttribute('data-day-and-time') 
+    const activityDate = activity.getAttribute('data-day-and-time');
     const activityCost = activity.getAttribute('data-cost');
-    console.log(activity.checked)
-    console.log(activityCost)
-    // activitiesSelected = [];
 
-    // if (activity.checked) {
-    //     activitiesTotalCost += activityCost
-    // }
+    if (activity.checked) {
+        activitiesTotalCost += +activityCost;
+        activitiesTotal.value = `Total: $${activitiesTotalCost}`;
+    } else {
+        activitiesTotalCost += -activityCost;
+        activitiesTotal.value = `Total: $${activitiesTotalCost}`;
+    }
 
-    // for (let i = 0; i < allActivities.length; i++) {
-    //     allActivities[i];
-        
-    // }
-
-    console.log(e.target)
-})
+    for (let i = 0; i < allActivities.length; i++) {
+        const allActivitiesDate = allActivities[i].getAttribute('data-day-and-time');
+        if (activityDate.includes(allActivitiesDate) && activity != allActivities[i]) {
+            if (activity.checked) {
+                allActivities[i].disabled = true;
+            } else {
+                allActivities[i].disabled = false;
+            }
+        }
+    }
+});
