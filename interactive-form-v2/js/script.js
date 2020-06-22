@@ -1,13 +1,13 @@
 //Job role section
 const otherJobTitle = document.querySelector('#other-title');
-otherJobTitle.style.display = 'none';
+otherJobTitle.className = 'is-hidden';
 
 const userTitle = document.querySelector('#title');
 userTitle.addEventListener('change', () => {
     if (userTitle.value == 'other') {
-        otherJobTitle.style.display = 'block';
+        otherJobTitle.classList.remove('is-hidden');
     } else {
-        otherJobTitle.style.display = 'none';
+        otherJobTitle.className = 'is-hidden';
     }
 })
 
@@ -21,12 +21,12 @@ colorText.text = 'Please select a T-shirt theme';
 colors.appendChild(colorText);
 colorText.selected = true;
 
-// console.log(theme.options[0])
 for (let i = 0; i < colors.length; i++) {
     colors.options[i].hidden = 'true';  
 }
-// console.log(colors.options[0]) 
+
 theme.addEventListener('change', () => {
+    theme.options[0].disabled = true
     if (theme.value == 'js puns') {
         colorText.selected = false;
         for (let i = 0; i < colors.length; i++) {
@@ -87,3 +87,30 @@ activities.addEventListener('change', (e) => {
         }
     }
 });
+
+//Payment Section
+const payment = document.querySelector('#payment');
+const creditCard = document.querySelector('#credit-card');
+const payPal = document.querySelector('#paypal');
+const bitcoin = document.querySelector('#bitcoin');
+
+payment.options[1].selected = true
+payPal.className = 'is-hidden';
+bitcoin.className = 'is-hidden';
+
+payment.addEventListener('change', () => {
+    payment.options[0].disabled = true
+    if (payment.value == 'credit card') {
+        creditCard.classList.remove('is-hidden');
+        payPal.className = 'is-hidden';
+        bitcoin.className = 'is-hidden';
+    } else if (payment.value == 'paypal') {
+        payPal.classList.remove('is-hidden');
+        bitcoin.className = 'is-hidden';
+        creditCard.className = 'is-hidden';
+    } else {
+        bitcoin.classList.remove('is-hidden');
+        payPal.className = 'is-hidden';
+        creditCard.className = 'is-hidden';
+    }
+})
