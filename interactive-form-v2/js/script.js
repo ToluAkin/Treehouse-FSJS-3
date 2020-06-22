@@ -1,14 +1,17 @@
 //Job role section
+const form = document.querySelector('form');
+const name = document.querySelector('#name');
+const mail = document.querySelector('#mail');
+
+
 const otherJobTitle = document.querySelector('#other-title');
 otherJobTitle.className = 'is-hidden';
 
 const userTitle = document.querySelector('#title');
 userTitle.addEventListener('change', () => {
-    if (userTitle.value == 'other') {
-        otherJobTitle.classList.remove('is-hidden');
-    } else {
+    userTitle.value == 'other' ?
+        otherJobTitle.classList.remove('is-hidden') :
         otherJobTitle.className = 'is-hidden';
-    }
 })
 
 //T-shirt section
@@ -77,13 +80,12 @@ activities.addEventListener('change', (e) => {
     }
 
     for (let i = 0; i < allActivities.length; i++) {
+        console.log(!allActivities[i].checked);
         const allActivitiesDate = allActivities[i].getAttribute('data-day-and-time');
         if (activityDate.includes(allActivitiesDate) && activity != allActivities[i]) {
-            if (activity.checked) {
-                allActivities[i].disabled = true;
-            } else {
+            activity.checked ?
+                allActivities[i].disabled = true :
                 allActivities[i].disabled = false;
-            }
         }
     }
 });
@@ -113,4 +115,33 @@ payment.addEventListener('change', () => {
         payPal.className = 'is-hidden';
         creditCard.className = 'is-hidden';
     }
+});
+
+//Form Validation
+
+const nameValidation = () => {
+    if (name.value == 0) {
+        name.style.borderColor = 'red';
+    } else {
+        name.addEventListener('input', () => {
+            name.style.borderColor = 'white';
+        })
+    } 
+}
+        
+
+const emailValidation = () => {
+    const emailFormat = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i;
+    mail.value.match(emailFormat) ? mail.style.borderColor = '' : mail.style.borderColor = 'red';
+}
+
+const activityValidation = () => {}
+const submitButton = document.querySelector('button');
+
+form.addEventListener('input', () => {
+    nameValidation();
+})
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    nameValidation();
 })
