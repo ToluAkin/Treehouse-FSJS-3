@@ -127,6 +127,9 @@ option {
 	font-family: 'roboto', sans-serif;
 }
 
+p {
+	margin-top: 0;
+}
 /* ================================= 
   Page Styles
 ==================================== */
