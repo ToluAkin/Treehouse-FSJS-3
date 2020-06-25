@@ -126,7 +126,7 @@ const addErrorMessage = (section, message) => {
     parent.insertBefore(newElement, section.nextElementSibling);
 }
 
-//function hide and display based on arguement
+//function hide and display based on argument
 const validator = (args, errorPosition) => {
     if (args) {
         errorPosition.className = 'is-hidden';
@@ -189,7 +189,7 @@ const cardNumberValidation = () => {
     } else if (!cardNumberFormat.test(cardNumber.value)) { //checking if the value of card number input field is between 13 and 16
         errorMessage.classList.remove('is-hidden');
         cardNumberError.textContent = 'Please enter a credit card number.';
-    } else { //hiding error messages if all criterias are met
+    } else { //hiding error messages if all criteria are met
         errorMessage.className = 'is-hidden';
         return true;
     }
@@ -213,7 +213,7 @@ const cvvValidation = () => {
     validator(cvvFormat.test(cvv.value), errorMessage);
 } 
 
-cvv.addEventListener('input', () => zipValidation());
+cvv.addEventListener('input', () => cvvValidation());
 
 //adding all payment validation in one function
 const paymentValidation = () => {
@@ -230,7 +230,9 @@ form.addEventListener('submit', (e) => {
         validators[i];
         if (!validators[i]) {
             e.preventDefault();
-            window.scrollTo(0, 0);
+            return false;
+        } else {
+            return true;
         }
     }
     //validating the form when the credit card payment is picked
@@ -238,6 +240,9 @@ form.addEventListener('submit', (e) => {
         paymentValidation();
         if (!paymentValidation()) {
             e.preventDefault();
+            return false;
+        } else {
+            return true;
         }
     }
 });
