@@ -215,34 +215,27 @@ const cvvValidation = () => {
 
 cvv.addEventListener('input', () => cvvValidation());
 
-//adding all payment validation in one function
-const paymentValidation = () => {
-    cardNumberValidation();
-    zipValidation();
-    cvvValidation();
-}
 //PROJECT IS BUILT FOR EXCEEDS EXPECTATION GRADING
 //validating the form when submitted
 const form = document.querySelector('form');
 form.addEventListener('submit', (e) => {
     const validators = [nameValidation(), emailValidation(), activityValidation()]
+    const paymentValidator = [cardNumberValidation(), zipValidation(), cvvValidation()]
+    
     for (let i = 0; i < validators.length; i++) {
         validators[i];
         if (!validators[i]) {
             e.preventDefault();
-            return false;
-        } else {
-            return true;
         }
     }
+
     //validating the form when the credit card payment is picked
-    if (payment.value == 'credit card') {
-        paymentValidation();
-        if (!paymentValidation()) {
-            e.preventDefault();
-            return false;
-        } else {
-            return true;
+    if (payment.value === 'credit card') {
+        for (let i = 0; i < paymentValidator.length; i++) {
+            paymentValidator[i];
+            if (!paymentValidator[i]) {
+                e.preventDefault();
+            }
         }
     }
 });
