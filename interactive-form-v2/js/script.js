@@ -139,58 +139,58 @@ const validator = (args, errorPosition) => {
 
 //adding error message and validating the name input while typing
 addErrorMessage(name, 'This is a required field');
+const nameErrorMessage = name.nextElementSibling;
 const nameValidation = () => {
-    const errorMessage = name.nextElementSibling;
-    validator(name.value != '', errorMessage);
+    return validator(name.value != '', nameErrorMessage);
 }
-
 name.addEventListener('input', () => nameValidation());
+
 //adding error message and validating the email input while typing
 addErrorMessage(mail, 'Enter a valid email address');
+const mailErrorMessage = mail.nextElementSibling;
 const emailValidation = () => {
-    const errorMessage = mail.nextElementSibling;
     const emailFormat = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i;
-    validator(emailFormat.test(mail.value), errorMessage);
+    return validator(emailFormat.test(mail.value), mailErrorMessage);
 }
-
 mail.addEventListener('input', () => emailValidation());
+
 //adding error message and validating the activities section while making choices on activity to choose from
 addErrorMessage(activities, 'You are required to pick an activity for the Full Stack Conf');
+const activityErrorMessage = activities.nextElementSibling;
 const activityValidation = () => {
-    const errorMessage = activities.nextElementSibling;
     let checkedActivity = 0;
     for (let i = 0; i < allActivities.length; i++) {
         if (allActivities[i].checked) {
             checkedActivity++;
         }
     }
-    validator(checkedActivity > 0, errorMessage);
+    return validator(checkedActivity > 0, activityErrorMessage);
 }
-
 activities.addEventListener('change', () => activityValidation());
+
 //validating the card number input field while typing
 const cardNumber = document.querySelector('#cc-num');
 const zip = document.querySelector('#zip');
 const cvv = document.querySelector('#cvv');
 addErrorMessage(cardNumber, '');
+const cardNumberErrorMessage = cardNumber.nextElementSibling;
 const cardNumberError = document.querySelector('.col-6 p');
 const cardNumberValidation = () => {
-    const errorMessage = cardNumber.nextElementSibling;
     const cardNumberFormat = /^[0-9]{13,16}$/;
     //checking if the card number input field is empty
     if (cardNumber.value === '') {
-        errorMessage.classList.remove('is-hidden');
+        cardNumberErrorMessage.classList.remove('is-hidden');
         cardNumberError.textContent = 'Please enter a credit card number.';
         return false;
     } else if (/^[0-9]{10}$/.test(cardNumber.value)) { //checking if the value of the card number input field is 10
         cardNumberError.textContent = 'Please enter a credit card number between 13 and 16 digits';
-        errorMessage.classList.remove('is-hidden');
+        cardNumberErrorMessage.classList.remove('is-hidden');
         return false;
     } else if (!cardNumberFormat.test(cardNumber.value)) { //checking if the value of card number input field is between 13 and 16
-        errorMessage.classList.remove('is-hidden');
+        cardNumberErrorMessage.classList.remove('is-hidden');
         cardNumberError.textContent = 'Please enter a credit card number.';
     } else { //hiding error messages if all criteria are met
-        errorMessage.className = 'is-hidden';
+        cardNumberErrorMessage.className = 'is-hidden';
         return true;
     }
 }
@@ -198,21 +198,20 @@ cardNumber.addEventListener('input', () => cardNumberValidation());
 
 //validating the zipcode while typing
 addErrorMessage(zip, 'Please enter a 5 digits zip code');
+const zipErrorMessage = zip.nextElementSibling;
 const zipValidation = () => {
-    const errorMessage = zip.nextElementSibling;
     const zipFormat = /^[0-9]{5}$/;
-    validator(zipFormat.test(zip.value), errorMessage);
+    return validator(zipFormat.test(zip.value), zipErrorMessage);
 }
 zip.addEventListener('input', () => zipValidation());
 
 //validating the cvv while typing
 addErrorMessage(cvv, 'Please enter a 3 digits CVV');
+const cvvErrorMessage = cvv.nextElementSibling;
 const cvvValidation = () => {
-    const errorMessage = cvv.nextElementSibling;
     const cvvFormat = /^[0-9]{3}$/;
-    validator(cvvFormat.test(cvv.value), errorMessage);
+    return validator(cvvFormat.test(cvv.value), cvvErrorMessage);
 } 
-
 cvv.addEventListener('input', () => cvvValidation());
 
 //PROJECT IS BUILT FOR EXCEEDS EXPECTATION GRADING
@@ -223,7 +222,6 @@ form.addEventListener('submit', (e) => {
     const paymentValidator = [cardNumberValidation(), zipValidation(), cvvValidation()]
     
     for (let i = 0; i < validators.length; i++) {
-        validators[i];
         if (!validators[i]) {
             e.preventDefault();
         }
