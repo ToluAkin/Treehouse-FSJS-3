@@ -146,6 +146,7 @@ const nameValidation = () => {
 name.addEventListener('input', () => nameValidation());
 
 //adding error message and validating the email input while typing
+mail.placeholder = 'dave@treehouse.com';
 addErrorMessage(mail, 'Enter a valid email address');
 const mailErrorMessage = mail.nextElementSibling;
 const emailValidation = () => {
@@ -175,6 +176,9 @@ const cvv = document.querySelector('#cvv');
 addErrorMessage(cardNumber, '');
 const cardNumberErrorMessage = cardNumber.nextElementSibling;
 const cardNumberError = document.querySelector('.col-6 p');
+cardNumber.placeholder = '01234567890123';
+zip.placeholder = '12345';
+cvv.placeholder = '123';
 const cardNumberValidation = () => {
     const cardNumberFormat = /^[0-9]{13,16}$/;
     //checking if the card number input field is empty
@@ -221,20 +225,19 @@ form.addEventListener('submit', (e) => {
     const validators = [nameValidation(), emailValidation(), activityValidation()]
     const paymentValidator = [cardNumberValidation(), zipValidation(), cvvValidation()]
     
-    for (let i = 0; i < validators.length; i++) {
-        if (!validators[i]) {
+    validators.forEach(validator => {
+        if (!validator) {
             e.preventDefault();
         }
-    }
+    });
 
     //validating the form when the credit card payment is picked
     if (payment.value === 'credit card') {
-        for (let i = 0; i < paymentValidator.length; i++) {
-            paymentValidator[i];
-            if (!paymentValidator[i]) {
+        paymentValidator.forEach(creditCard => {
+            if (!creditCard) {
                 e.preventDefault();
             }
-        }
+        });
     }
 });
 //PROJECT IS BUILT FOR EXCEEDS EXPECTATION GRADING
