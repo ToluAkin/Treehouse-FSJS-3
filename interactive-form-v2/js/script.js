@@ -80,7 +80,7 @@ activities.addEventListener('change', (e) => {
     //Disabling events with matching date
     for (let i = 0; i < allActivities.length; i++) {
         const allActivitiesDate = allActivities[i].getAttribute('data-day-and-time');
-        if (activityDate.includes(allActivitiesDate) && activity != allActivities[i]) {
+        if (activityDate == allActivitiesDate && activity != allActivities[i]) {
             activity.checked ?
                 allActivities[i].disabled = true :
                 allActivities[i].disabled = false;
@@ -127,12 +127,12 @@ const addErrorMessage = (section, message) => {
 }
 
 //function hide and display based on argument
-const validator = (args, errorPosition) => {
+const validator = (args, errorMessage) => {
     if (args) {
-        errorPosition.className = 'is-hidden';
+        errorMessage.className = 'is-hidden';
         return true;
     } else {
-        errorPosition.classList.remove('is-hidden');
+        errorMessage.classList.remove('is-hidden');
         return false;
     }
 }
@@ -146,12 +146,28 @@ const nameValidation = () => {
 name.addEventListener('input', () => nameValidation());
 
 //adding error message and validating the email input while typing
-mail.placeholder = 'dave@treehouse.com';
-addErrorMessage(mail, 'Enter a valid email address');
+mail.placeholder = 'dave@teamtreehouse.com';
+addErrorMessage(mail, '');
+const mailError = document.querySelectorAll('p')[1];
+
 const mailErrorMessage = mail.nextElementSibling;
 const emailValidation = () => {
     const emailFormat = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i;
-    return validator(emailFormat.test(mail.value), mailErrorMessage);
+
+    if (mail.value === '') {
+        mailErrorMessage.classList.remove('is-hidden');
+        mailError.textContent = 'Please enter your email address';
+        return false;
+    } else if (!emailFormat.test(mail.value)) {
+        mailErrorMessage.classList.remove('is-hidden');
+        mailError.textContent = 'Please enter a valid email address';
+        return false;
+    } else {
+        mailErrorMessage.className = 'is-hidden';
+        return true;
+    }
+
+    // return validator(emailFormat.test(mail.value), mailErrorMessage);
 }
 mail.addEventListener('input', () => emailValidation());
 
@@ -184,15 +200,15 @@ const cardNumberValidation = () => {
     //checking if the card number input field is empty
     if (cardNumber.value === '') {
         cardNumberErrorMessage.classList.remove('is-hidden');
-        cardNumberError.textContent = 'Please enter a credit card number.';
+        cardNumberError.textContent = 'Please enter your credit card number.';
         return false;
-    } else if (/^[0-9]{10}$/.test(cardNumber.value)) { //checking if the value of the card number input field is 10
+    } else if (/^[0-9]{0,12}$/.test(cardNumber.value)) { //checking if the value of the card number input field is 10
         cardNumberError.textContent = 'Please enter a credit card number between 13 and 16 digits';
         cardNumberErrorMessage.classList.remove('is-hidden');
         return false;
     } else if (!cardNumberFormat.test(cardNumber.value)) { //checking if the value of card number input field is between 13 and 16
         cardNumberErrorMessage.classList.remove('is-hidden');
-        cardNumberError.textContent = 'Please enter a credit card number.';
+        cardNumberError.textContent = 'Please enter a valid credit card number.';
     } else { //hiding error messages if all criteria are met
         cardNumberErrorMessage.className = 'is-hidden';
         return true;
