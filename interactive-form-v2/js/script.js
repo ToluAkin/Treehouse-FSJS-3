@@ -153,12 +153,12 @@ const mailError = document.querySelectorAll('p')[1];
 const mailErrorMessage = mail.nextElementSibling;
 const emailValidation = () => {
     const emailFormat = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i;
-
-    if (mail.value === '') {
+    
+    if (mail.value === '') { //validating the email input field if it is empty
         mailErrorMessage.classList.remove('is-hidden');
         mailError.textContent = 'Please enter your email address';
         return false;
-    } else if (!emailFormat.test(mail.value)) {
+    } else if (!emailFormat.test(mail.value)) { // validating the email input value if it is not correct
         mailErrorMessage.classList.remove('is-hidden');
         mailError.textContent = 'Please enter a valid email address';
         return false;
@@ -202,7 +202,7 @@ const cardNumberValidation = () => {
         cardNumberErrorMessage.classList.remove('is-hidden');
         cardNumberError.textContent = 'Please enter your credit card number.';
         return false;
-    } else if (/^[0-9]{0,12}$/.test(cardNumber.value)) { //checking if the value of the card number input field is 10
+    } else if (/^[0-9]{0,12}$/.test(cardNumber.value)) { //checking if the value of the card number input field is between 0 & 12
         cardNumberError.textContent = 'Please enter a credit card number between 13 and 16 digits';
         cardNumberErrorMessage.classList.remove('is-hidden');
         return false;
