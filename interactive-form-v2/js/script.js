@@ -5,14 +5,15 @@ const userTitle = document.querySelector('#title');
 const name = document.querySelector('#name');
 const mail = document.querySelector('#mail');
 //Set focus on the first text field
+name.placeholder = "John Doe";
 name.focus();
 //Hiding the other Job Title on page load
-otherJobTitle.className = 'is-hidden';
+otherJobTitle.classList.add('is-hidden');
 //Hiding and showing the job title
 userTitle.addEventListener('change', () => {
-    userTitle.value == 'other' ?
+    userTitle.value === 'other' ?
         otherJobTitle.classList.remove('is-hidden') :
-        otherJobTitle.className = 'is-hidden';
+        otherJobTitle.classList.add('is-hidden');
 })
 
 //T-shirt section
@@ -25,67 +26,67 @@ colorText.text = 'Please select a T-shirt theme';
 colors.appendChild(colorText);
 //selecting default section and hiding colors Div
 colorText.selected = true;
-colorsDiv.className = 'is-hidden';
+colorsDiv.classList.add('is-hidden');
 //Hiding all colors 
-for (let i = 0; i < colors.length; i++) {
-    colors.options[i].hidden = 'true';
+let options = colors.options;
+for (let option in options) {
+    option.hidden = true
 }
 //updating the colors based on design
 theme.addEventListener('change', () => {
     theme.options[0].disabled = true
     colorsDiv.classList.remove('is-hidden');
+    colorText.selected = false;
     for (let i = 0; i < colors.length; i++) {
-        colorText.selected = false;
-        if (theme.value == 'js puns') {
+        if (theme.value === 'js puns') {
             if (i < 3) {
-                colors.options[0].selected = true;
-                colors.options[i].hidden = ''
+                options[0].selected = true;
+                options[i].hidden = false;
             } else {
-                colors.options[i].hidden = true;
+                options[i].hidden = true;
             }
         } else {
-            colorText.selected = false;
-            colors.options[3].selected = true;
+            options[3].selected = true;
             if (i >= 3) {
-                colors.options[i].hidden = '';
-                colors.options[6].hidden = true;
+                options[i].hidden = false;
+                options[6].hidden = true;
             } else {
-                colors.options[i].hidden = true;
+                options[i].hidden = true;
             }
         }
     }
 });
 
 // Register for activities section
-const activities = document.querySelector('.activities');
+const activitiesSection = document.querySelector('.activities');
 const allActivities = document.querySelectorAll('input[type=checkbox]');
 
 //creating input field for the total cost of activity
 const activitiesTotal = document.createElement('input');
 activitiesTotal.disabled = true;
-activities.appendChild(activitiesTotal);
+activitiesSection.appendChild(activitiesTotal);
 //setting the value of the total cost of activity
 let activitiesTotalCost = 0;
 activitiesTotal.value = `Total: $${activitiesTotalCost}`;
 
-activities.addEventListener('change', (e) => {
-    const activity = e.target;
-    const activityDate = activity.getAttribute('data-day-and-time');
-    const activityCost = parseInt(activity.getAttribute('data-cost'));
+activitiesSection.addEventListener('change', (e) => {
+    let selectedActivity = e.target;
+    let selectedActivityDate = selectedActivity.getAttribute('data-day-and-time');
+    let activityCost = parseInt(selectedActivity.getAttribute('data-cost'));
     //Updating the cost of activity based on events picked
-    activity.checked ?
+    selectedActivity.checked ?
         activitiesTotalCost += activityCost :
         activitiesTotalCost -= activityCost;
     activitiesTotal.value = `Total: $${activitiesTotalCost}`;
     //Disabling events with matching date
-    for (let i = 0; i < allActivities.length; i++) {
-        const allActivitiesDate = allActivities[i].getAttribute('data-day-and-time');
-        if (activityDate == allActivitiesDate && activity != allActivities[i]) {
-            activity.checked ?
-                allActivities[i].disabled = true :
-                allActivities[i].disabled = false;
+    allActivities.forEach(activity => {
+        let activityDate = activity.getAttribute('data-day-and-time');
+        if (selectedActivityDate === activityDate && selectedActivity !== activity) {
+            selectedActivity.checked ?
+                activity.disabled = true :
+                activity.disabled = false;
         }
-    }
+    });
 });
 
 //Payment Section
@@ -95,41 +96,40 @@ const payPal = document.querySelector('#paypal');
 const bitcoin = document.querySelector('#bitcoin');
 //Selecting credit card option by default and hiding other payment methods
 payment.options[1].selected = true
-payPal.className = 'is-hidden';
-bitcoin.className = 'is-hidden';
+payPal.classList.add('is-hidden');
+bitcoin.classList.add('is-hidden');
 //Displaying one payment method per time
 payment.addEventListener('change', () => {
     payment.options[0].disabled = true
-    if (payment.value == 'credit card') {
+    if (payment.value === 'credit card') {
         creditCard.classList.remove('is-hidden');
-        payPal.className = 'is-hidden';
-        bitcoin.className = 'is-hidden';
-    } else if (payment.value == 'paypal') {
+        payPal.classList.add('is-hidden');
+        bitcoin.classList.add('is-hidden');
+    } else if (payment.value === 'paypal') {
         payPal.classList.remove('is-hidden');
-        bitcoin.className = 'is-hidden';
-        creditCard.className = 'is-hidden';
+        bitcoin.classList.add('is-hidden');
+        creditCard.classList.add('is-hidden');
     } else {
         bitcoin.classList.remove('is-hidden');
-        payPal.className = 'is-hidden';
-        creditCard.className = 'is-hidden';
+        payPal.classList.add('is-hidden');
+        creditCard.classList.add('is-hidden');
     }
 });
 
 //Form Validation
 //Function to add error message to input field or section
 const addErrorMessage = (section, message) => {
-    const newElement = document.createElement('p');
-    const parent = section.parentNode;
+    let newElement = document.createElement('p');
     newElement.textContent = message;
     newElement.style.color = 'red';
-    newElement.className = 'is-hidden';
-    parent.insertBefore(newElement, section.nextElementSibling);
+    newElement.classList.add('is-hidden');
+    section.parentNode.insertBefore(newElement, section.nextElementSibling);
 }
 
 //function hide and display based on argument
-const validator = (args, errorMessage) => {
-    if (args) {
-        errorMessage.className = 'is-hidden';
+const validator = (hasValue, errorMessage) => {
+    if (hasValue) {
+        errorMessage.classList.add('is-hidden');
         return true;
     } else {
         errorMessage.classList.remove('is-hidden');
@@ -141,7 +141,7 @@ const validator = (args, errorMessage) => {
 addErrorMessage(name, 'This is a required field');
 const nameErrorMessage = name.nextElementSibling;
 const nameValidation = () => {
-    return validator(name.value != '', nameErrorMessage);
+    return validator(!!(name.value), nameErrorMessage);
 }
 name.addEventListener('input', () => nameValidation());
 
@@ -152,9 +152,8 @@ const mailError = document.querySelectorAll('p')[1];
 
 const mailErrorMessage = mail.nextElementSibling;
 const emailValidation = () => {
-    const emailFormat = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i;
-    
-    if (mail.value === '') { //validating the email input field if it is empty
+    let emailFormat = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i;
+    if (!mail.value) { //validating the email input field if it is empty
         mailErrorMessage.classList.remove('is-hidden');
         mailError.textContent = 'Please enter your email address';
         return false;
@@ -163,27 +162,23 @@ const emailValidation = () => {
         mailError.textContent = 'Please enter a valid email address';
         return false;
     } else {
-        mailErrorMessage.className = 'is-hidden';
+        mailErrorMessage.classList.add('is-hidden');
         return true;
     }
-
-    // return validator(emailFormat.test(mail.value), mailErrorMessage);
 }
 mail.addEventListener('input', () => emailValidation());
 
 //adding error message and validating the activities section while making choices on activity to choose from
-addErrorMessage(activities, 'You are required to pick an activity for the Full Stack Conf');
-const activityErrorMessage = activities.nextElementSibling;
+addErrorMessage(activitiesSection, 'You are required to pick an activity for the Full Stack Conf');
+const activityErrorMessage = activitiesSection.nextElementSibling;
 const activityValidation = () => {
     let checkedActivity = 0;
-    for (let i = 0; i < allActivities.length; i++) {
-        if (allActivities[i].checked) {
-            checkedActivity++;
-        }
-    }
+    allActivities.forEach(activity => {
+        if (activity.checked) checkedActivity++
+    });
     return validator(checkedActivity > 0, activityErrorMessage);
 }
-activities.addEventListener('change', () => activityValidation());
+activitiesSection.addEventListener('change', () => activityValidation());
 
 //validating the card number input field while typing
 const cardNumber = document.querySelector('#cc-num');
@@ -196,7 +191,7 @@ cardNumber.placeholder = '01234567890123';
 zip.placeholder = '12345';
 cvv.placeholder = '123';
 const cardNumberValidation = () => {
-    const cardNumberFormat = /^[0-9]{13,16}$/;
+    let cardNumberFormat = /^[0-9]{13,16}$/;
     //checking if the card number input field is empty
     if (cardNumber.value === '') {
         cardNumberErrorMessage.classList.remove('is-hidden');
@@ -210,13 +205,13 @@ const cardNumberValidation = () => {
         cardNumberErrorMessage.classList.remove('is-hidden');
         cardNumberError.textContent = 'Please enter a valid credit card number.';
     } else { //hiding error messages if all criteria are met
-        cardNumberErrorMessage.className = 'is-hidden';
+        cardNumberErrorMessage.classList.add('is-hidden');
         return true;
     }
 }
 cardNumber.addEventListener('input', () => cardNumberValidation());
 
-//validating the zipcode while typing
+//validating the zipCode while typing
 addErrorMessage(zip, 'Please enter a 5 digits zip code');
 const zipErrorMessage = zip.nextElementSibling;
 const zipValidation = () => {
@@ -229,30 +224,24 @@ zip.addEventListener('input', () => zipValidation());
 addErrorMessage(cvv, 'Please enter a 3 digits CVV');
 const cvvErrorMessage = cvv.nextElementSibling;
 const cvvValidation = () => {
-    const cvvFormat = /^[0-9]{3}$/;
+    let cvvFormat = /^[0-9]{3}$/;
     return validator(cvvFormat.test(cvv.value), cvvErrorMessage);
-} 
+}
 cvv.addEventListener('input', () => cvvValidation());
 
 //PROJECT IS BUILT FOR EXCEEDS EXPECTATION GRADING
 //validating the form when submitted
 const form = document.querySelector('form');
 form.addEventListener('submit', (e) => {
-    const validators = [nameValidation(), emailValidation(), activityValidation()]
-    const paymentValidator = [cardNumberValidation(), zipValidation(), cvvValidation()]
-    
+    let validators = [nameValidation(), emailValidation(), activityValidation()]
+    let paymentValidator = [cardNumberValidation(), zipValidation(), cvvValidation()]
     validators.forEach(validator => {
-        if (!validator) {
-            e.preventDefault();
-        }
+        if (!validator) e.preventDefault();
     });
-
     //validating the form when the credit card payment is picked
     if (payment.value === 'credit card') {
         paymentValidator.forEach(creditCard => {
-            if (!creditCard) {
-                e.preventDefault();
-            }
+            if (!creditCard) e.preventDefault();
         });
     }
 });
